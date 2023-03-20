@@ -172,3 +172,166 @@ void PrintArray(int[,] array)
         Console.WriteLine();
     }
 }
+
+// Задача 60. Сформируйте трёхмерный массив из неповторяющихся двузначных чисел. 
+// Напишите программу, которая будет построчно выводить массив, 
+// добавляя индексы каждого элемента.
+// массив размером 2 x 2 x 2
+// 12(0,0,0) 22(0,0,1)
+// 45(1,0,0) 53(1,0,1)
+Console.WriteLine($"Введите размер массива X x Y x Z: ");
+int x = InputNumbers("Введите X: ");
+int y = InputNumbers("Введите Y: ");
+int z = InputNumbers("Введите Z: ");
+Console.WriteLine($"");
+
+int[,,] array3D = new int[x, y, z];
+CreateArray(array3D);
+WriteArray(array3D);
+
+int InputNumbers(string input)
+{
+  Console.Write(input);
+  int output = Convert.ToInt32(Console.ReadLine());
+  return output;
+}
+
+void WriteArray (int[,,] array3D)
+{
+  for (int i = 0; i < array3D.GetLength(0); i++)
+  {
+    for (int j = 0; j < array3D.GetLength(1); j++)
+    {
+      Console.Write($"X({i}) Y({j}) ");
+      for (int k = 0; k < array3D.GetLength(2); k++)
+      {
+        Console.Write( $"Z({k})={array3D[i,j,k]}; ");
+      }
+      Console.WriteLine();
+    }
+    Console.WriteLine();
+  }
+}
+
+void CreateArray(int[,,] array3D)
+{
+  int[] temp = new int[array3D.GetLength(0) * array3D.GetLength(1) * array3D.GetLength(2)];
+  int  number;
+  for (int i = 0; i < temp.GetLength(0); i++)
+  {
+    temp[i] = new Random().Next(10, 100);
+    number = temp[i];
+    if (i >= 1)
+    {
+      for (int j = 0; j < i; j++)
+      {
+        while (temp[i] == temp[j])
+        {
+          temp[i] = new Random().Next(10, 100);
+          j = 0;
+          number = temp[i];
+        }
+          number = temp[i];
+      }
+    }
+  }
+  int count = 0; 
+  for (int x = 0; x < array3D.GetLength(0); x++)
+  {
+    for (int y = 0; y < array3D.GetLength(1); y++)
+    {
+      for (int z = 0; z < array3D.GetLength(2); z++)
+      {
+        array3D[x, y, z] = temp[count];
+        count++;
+      }
+    }
+  }
+}
+
+// Задача 58: Задайте две матрицы. Напишите программу, 
+// которая будет находить произведение двух матриц.
+
+// Например, заданы 2 массива:
+// 1 4 7 2
+// 5 9 2 3
+// 8 4 2 4
+// 5 2 6 7
+// и
+// 1 5 8 5
+// 4 9 4 2
+// 7 2 2 6
+// 2 3 4 7
+// Их произведение будет равно следующему массиву:
+// 1 20 56 10
+// 20 81 8 6
+// 56 8 4 24
+// 10 6 24 49
+
+Console.WriteLine("Введите размеры матриц и диапазон случайных значений:");
+int m = InputNumbers("Введите число строк 1-й матрицы: ");
+int n = InputNumbers("Введите число столбцов 1-й матрицы (и строк 2-й): ");
+int p = InputNumbers("Введите число столбцов 2-й матрицы: ");
+int range = InputNumbers("Введите диапазон случайных чисел: от 1 до ");
+
+int[,] firstMartrix = new int[m, n];
+CreateArray(firstMartrix);
+Console.WriteLine($"Первая матрица:");
+WriteArray(firstMartrix);
+
+int[,] secomdMartrix = new int[n, p];
+CreateArray(secomdMartrix);
+Console.WriteLine($"Вторая матрица:");
+WriteArray(secomdMartrix);
+
+int[,] resultMatrix = new int[m,p];
+
+MultiplyMatrix(firstMartrix, secomdMartrix, resultMatrix);
+Console.WriteLine($"Произведение первой и второй матриц:");
+WriteArray(resultMatrix);
+
+void MultiplyMatrix(int[,] firstMartrix, int[,] secomdMartrix, int[,] resultMatrix)
+{
+  for (int i = 0; i < resultMatrix.GetLength(0); i++)
+  {
+    for (int j = 0; j < resultMatrix.GetLength(1); j++)
+    {
+      int sum = 0;
+      for (int k = 0; k < firstMartrix.GetLength(1); k++)
+      {
+        sum += firstMartrix[i,k] * secomdMartrix[k,j];
+      }
+      resultMatrix[i,j] = sum;
+    }
+  }
+}
+
+int InputNumbers(string input)
+{
+  Console.Write(input);
+  int output = Convert.ToInt32(Console.ReadLine());
+  return output;
+}
+
+void CreateArray(int[,] array)
+{
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
+    {
+      array[i, j] = new Random().Next(range);
+    }
+  }
+}
+
+void WriteArray (int[,] array)
+{
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
+    {
+      Console.Write(array[i,j] + " ");
+    }
+    Console.WriteLine();
+  }
+}
